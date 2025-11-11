@@ -23,7 +23,7 @@ import org.apache.spark.sql.execution.datasources.jdbc.{
 
 class SQLServerBulkJdbcOptions(
     parameters: CaseInsensitiveMap[String])
-    extends JdbcOptionsInWrite(parameters) {
+    extends JdbcOptionsInWrite(parameters.originalMap) {
 
   def this(params: Map[String, String]) = this(CaseInsensitiveMap(params))
 
