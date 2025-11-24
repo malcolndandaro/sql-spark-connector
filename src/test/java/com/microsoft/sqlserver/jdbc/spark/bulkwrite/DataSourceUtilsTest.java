@@ -24,7 +24,7 @@ import java.util.NoSuchElementException;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.RowFactory;
 import scala.collection.Iterator;
-import scala.collection.JavaConversions;
+import scala.jdk.javaapi.CollectionConverters;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 
 public class DataSourceUtilsTest {
@@ -55,7 +55,7 @@ public class DataSourceUtilsTest {
             new ColumnMetadata("entry_word", Types.LONGVARCHAR, 20, 4,20)
         };
 
-        Iterator<Row> itr = JavaConversions.asScalaIterator(Arrays.asList(rows).iterator());
+        Iterator<Row> itr = CollectionConverters.asScala(Arrays.asList(rows).iterator());
         DataFrameBulkRecord record = new DataFrameBulkRecord(itr, metadata);
 
         Set<Integer> columnOrdinals = record.getColumnOrdinals();

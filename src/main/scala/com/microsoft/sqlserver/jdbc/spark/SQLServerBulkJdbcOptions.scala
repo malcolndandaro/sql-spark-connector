@@ -21,15 +21,14 @@ import org.apache.spark.sql.execution.datasources.jdbc.{
   JdbcOptionsInWrite
 }
 
-class SQLServerBulkJdbcOptions(val params: CaseInsensitiveMap[String])
-    extends JdbcOptionsInWrite(params) {
+class SQLServerBulkJdbcOptions(
+    parameters: CaseInsensitiveMap[String])
+    extends JdbcOptionsInWrite(parameters.originalMap) {
 
   def this(params: Map[String, String]) = this(CaseInsensitiveMap(params))
 
-  // Save original parameters for when a JdbcBulkOptions instance is passed
-  // from the Spark driver to an executor, which loses the reference to the
-  // params input in memory
-  override val parameters = params
+  // Keep reference to parameters for later use
+  val params: CaseInsensitiveMap[String] = parameters
 
   val dbtable = params.getOrElse("dbtable", null)
 

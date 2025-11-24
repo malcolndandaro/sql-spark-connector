@@ -2,33 +2,54 @@
   <img src="sql-spark-connector-icon.svg" alt="Apache Spark Connector for SQL Server and Azure SQL" width="150"/>
 </p>
 
-# Important Notice (Feb 2025)
-This project is no longer maintained. For any interested parties, please feel free to fork and maintain it on GitHub.
-
 # Apache Spark Connector for SQL Server and Azure SQL
-Born out of Microsoft’s SQL Server Big Data Clusters investments, the Apache Spark Connector for SQL Server and Azure SQL is a high-performance connector that enables you to use transactional data in big data analytics and persists results for ad-hoc queries or reporting. The connector allows you to use any SQL database, on-premises or in the cloud, as an input data source or output data sink for Spark jobs.
+
+## Community Fork - Active Development ✅
+
+This is a **community-maintained fork** of the original Microsoft sql-spark-connector, which was deprecated in February 2025. This fork continues active development and has been **successfully migrated to support Apache Spark 4.0 and Databricks Runtime 17.3 LTS**.
+
+Born out of Microsoft's SQL Server Big Data Clusters investments, the Apache Spark Connector for SQL Server and Azure SQL is a high-performance connector that enables you to use transactional data in big data analytics and persists results for ad-hoc queries or reporting. The connector allows you to use any SQL database, on-premises or in the cloud, as an input data source or output data sink for Spark jobs.
 
 This library contains the source code for the Apache Spark Connector for SQL Server and Azure SQL.
 
 [Apache Spark](https://spark.apache.org/) is a unified analytics engine for large-scale data processing.
 
-There are three version sets of the connector available through Maven, a 2.4.x, a 3.0.x and a 3.1.x compatible version. All versions can be found [here](https://search.maven.org/search?q=spark-mssql-connector) and can be imported using the coordinates below:
+## Supported Versions
 
-| Connector                        | Maven Coordinate                                       | Scala Version |
-|----------------------------------|--------------------------------------------------------|---------------|
-| Spark 2.4.x compatible connector | `com.microsoft.azure:spark-mssql-connector:1.0.2`      | 2.11          |
-| Spark 3.0.x compatible connector | `com.microsoft.azure:spark-mssql-connector_2.12:1.1.0` | 2.12          |
-| Spark 3.1.x compatible connector | `com.microsoft.azure:spark-mssql-connector_2.12:1.2.0` | 2.12          |
-| Spark 3.3.x compatible connector | `com.microsoft.azure:spark-mssql-connector_2.12:1.3.0` | 2.12          |
-| Spark 3.4.x compatible connector | `com.microsoft.azure:spark-mssql-connector_2.12:1.4.0` | 2.12          |
+This fork provides two actively maintained versions:
 
-## Current Releases
+| Spark Version | Scala Version | Java Version | Maven Profile | Artifact Name | Status |
+|--------------|---------------|--------------|---------------|---------------|--------|
+| **4.0.x** | **2.13** | **17/21** | **spark40** | **spark-mssql-connector_2.13-1.4.0-spark40.jar** | **✅ NEW** |
+| 3.4.x | 2.12 | 8 | spark34 (default) | spark-mssql-connector_2.12-1.4.0.jar | ✅ Maintained |
 
-The latest Spark 2.4.x compatible connector is on v1.0.2.
+**Note:** This community fork is not published to Maven Central. You need to build from source.
 
-The latest Spark 3.0.x compatible connector is on v1.1.0.
+### Building from Source
 
-The latest Spark 3.1.x compatible connector is on v1.2.0.
+**For Spark 4.0 / Databricks Runtime 17.3 LTS:**
+```bash
+mvn clean package -Pspark40
+```
+
+**For Spark 3.4:**
+```bash
+mvn clean package -Pspark34
+# or simply:
+mvn clean package
+```
+
+### Legacy Versions (Original Microsoft Releases)
+
+Historical versions are available from Maven Central:
+
+| Connector | Maven Coordinate | Scala Version |
+|-----------|-----------------|---------------|
+| Spark 2.4.x | `com.microsoft.azure:spark-mssql-connector:1.0.2` | 2.11 |
+| Spark 3.0.x | `com.microsoft.azure:spark-mssql-connector_2.12:1.1.0` | 2.12 |
+| Spark 3.1.x | `com.microsoft.azure:spark-mssql-connector_2.12:1.2.0` | 2.12 |
+| Spark 3.3.x | `com.microsoft.azure:spark-mssql-connector_2.12:1.3.0` | 2.12 |
+| Spark 3.4.x | `com.microsoft.azure:spark-mssql-connector_2.12:1.4.0` | 2.12 |
 
 For main changes from previous releases and known issues please refer to [CHANGELIST](docs/CHANGELIST.md)
 
@@ -40,13 +61,21 @@ For main changes from previous releases and known issues please refer to [CHANGE
 * Reliable connector support for Sql Server Single Instance
 
 
-| Component                            | Versions Supported         |
-|--------------------------------------|----------------------------|
-| Apache Spark                         | 2.4.x, 3.0.x, 3.1.x, 3.3.x |
-| Scala                                | 2.11, 2.12                 |
-| Microsoft JDBC Driver for SQL Server | 8.4.1                      |
-| Microsoft SQL Server                 | SQL Server 2008 or later   |
-| Azure SQL Databases                  | Supported                  |
+| Component                            | Versions Supported (This Fork)  |
+|--------------------------------------|---------------------------------|
+| Apache Spark                         | **4.0.x (NEW)**, 3.4.x         |
+| Scala                                | **2.13 (NEW)**, 2.12           |
+| Java                                 | **17/21 (NEW)**, 8             |
+| Microsoft JDBC Driver for SQL Server | **12.6.1 (Spark 4.0)**, 8.4.1 (Spark 3.4) |
+| Microsoft SQL Server                 | SQL Server 2008 or later       |
+| Azure SQL Databases                  | Supported                      |
+| **Databricks Runtime**               | **17.3 LTS or later (NEW)**    |
+
+### Legacy Support (Historical)
+
+For reference, the original Microsoft connector supported:
+- Apache Spark: 2.4.x, 3.0.x, 3.1.x, 3.3.x
+- Scala: 2.11, 2.12
 
 *Note: Azure Synapse (Azure SQL DW) use is not tested with this connector. While it may work, there may be unintended consequences.*
 
@@ -111,7 +140,33 @@ For more information and explanation, visit the closed [issue](https://github.co
 
 The Apache Spark Connector for SQL Server and Azure SQL is based on the Spark DataSourceV1 API and SQL Server Bulk API and uses the same interface as the built-in JDBC Spark-SQL connector. This allows you to easily integrate the connector and migrate your existing Spark jobs by simply updating the format parameter with `com.microsoft.sqlserver.jdbc.spark`.
 
-To include the connector in your projects download this repository and build the jar using SBT.
+### Installation
+
+**For Databricks Runtime 17.3 LTS or later:**
+
+1. Build the Spark 4.0 version:
+   ```bash
+   git clone <this-repository>
+   cd sql-spark-connector
+   mvn clean package -Pspark40
+   ```
+
+2. Upload the JAR to Databricks:
+   - Navigate to: **Workspace → Create → Library**
+   - Upload: `target/spark-mssql-connector_2.13-1.4.0-spark40.jar`
+   - Attach to your Databricks cluster (Runtime 17.3 LTS or later)
+
+**For Standalone Spark 4.0:**
+```bash
+mvn clean package -Pspark40
+cp target/spark-mssql-connector_2.13-1.4.0-spark40.jar $SPARK_HOME/jars/
+```
+
+**For Spark 3.4:**
+```bash
+mvn clean package -Pspark34
+cp target/spark-mssql-connector_2.12-1.4.0.jar $SPARK_HOME/jars/
+```
 
 ### Migrating from Legacy Azure SQL Connector for Spark
 
@@ -232,11 +287,53 @@ via pip.
 
 Please check the [sample notebooks](samples) for examples.
 
+## What's New in This Fork
+
+### Spark 4.0 Support (✅ Completed)
+
+This fork successfully migrates the connector to Apache Spark 4.0 and Databricks Runtime 17.3 LTS:
+
+**Key Changes:**
+- ✅ Upgraded to Scala 2.13.12 (from 2.12.11)
+- ✅ Upgraded to Spark 4.0.1 (from 3.4.0)
+- ✅ Upgraded to Java 17 (from Java 8)
+- ✅ Upgraded mssql-jdbc to 12.6.1.jre11 (from 8.4.1.jre8)
+- ✅ Fixed binary incompatibility issues (`scala.Serializable` errors)
+- ✅ Updated Spark API method signatures (`getSchema`, `schemaString`)
+- ✅ Fixed constructor parameter handling in `SQLServerBulkJdbcOptions`
+- ✅ Updated Scala collection conversions for 2.13 compatibility
+- ✅ All tests passing (9/9)
+
+**Migration Details:**
+For detailed information about the migration, see:
+- [`claude.md`](claude.md) - Migration analysis and implementation guide
+- [`SPARK40_MIGRATION_COMPLETE.md`](SPARK40_MIGRATION_COMPLETE.md) - Complete migration documentation
+- [`SPARK40_CONSTRUCTOR_FIX.md`](SPARK40_CONSTRUCTOR_FIX.md) - Constructor compatibility fix details
+
 # Support
-The Apache Spark Connector for Azure SQL and SQL Server is an open source project. This connector does not come with any Microsoft support. For issues with or questions about the connector, please create an Issue in this project repository. The connector community is active and monitoring submissions.
+
+This is a **community-maintained fork**. The original Microsoft connector was deprecated in February 2025 and is no longer supported by Microsoft.
+
+For issues with or questions about **this fork**, please:
+- Create an Issue in this repository
+- Refer to the migration documentation listed above
+- Check existing issues for similar problems
+
+**Note:** This fork does not come with Microsoft support. Community support is provided on a best-effort basis.
 
 # Roadmap
-Visit the Connector project in the **Projects** tab to see needed / planned items. Feel free to make an issue and start contributing!
+
+**Completed:**
+- ✅ Spark 4.0 / Scala 2.13 migration
+- ✅ Databricks Runtime 17.3 LTS compatibility
+- ✅ Maintained Spark 3.4 compatibility
+
+**Future Considerations:**
+- Explore DataSourceV2 API migration (for better performance in future Spark versions)
+- Additional testing with various SQL Server configurations
+- Performance benchmarking on Spark 4.0
+
+Feel free to make an issue and start contributing!
 
 # Contributing
 
